@@ -1,71 +1,119 @@
-// hooks/useAuth.tsx
-import { useState, createContext, useContext, ReactNode } from "react"; 
-import { User, AuthState } from "../types";
 
-interface AuthContextType extends AuthState {
-  login: (email: string, password: string) => Promise<void>;
-  register: (userData: Partial<User>) => Promise<void>;
-  logout: () => void;
-  updateProfile: (userData: Partial<User>) => void;
+import { useState, useContext, createContext, useEffect } from 'react'; // Fixed: added useEffect
+import { 
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  updateProfile,
+  User,
+  UserCredential
+} from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { auth, db } from '../firebase/config';
+
+interface AuthContextType {
+  user: User | null;
+  login: (email: string, password: string) => Promise<UserCredential>;
+  register: (email: string, password: string, fullName: string, phone?: string) => Promise<UserCredential>;
+  logout: () => Promise<void>;
+  isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-interface AuthProviderProps {
-  children: ReactNode;
-}
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-export function AuthProvider({ children }: AuthProviderProps) {
-  const [authState, setAuthState] = useState<AuthState>({
-    user: null,
-    isAuthenticated: false,
-    isLoading: false,
-  });
-
-  const login = async (email: string, password: string) => {
-    setAuthState((prev) => ({ ...prev, isLoading: true }));
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    const user: User = {
-      id: "1",
-      name: "John Doe",
-      email,
-      phone: "(555) 123-4567",
-      avatar:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?...",
-    };
-    setAuthState({ user, isAuthenticated: true, isLoading: false });
-  };
-
-  const register = async (userData: Partial<User>) => {
-    setAuthState((prev) => ({ ...prev, isLoading: true }));
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    const user: User = {
-      id: "1",
-      name: userData.name ?? "",
-      email: userData.email ?? "",
-      phone: userData.phone ?? "",
-      avatar: userData.avatar ?? "",
-    };
-    setAuthState({ user, isAuthenticated: true, isLoading: false });
-  };
-
-  const logout = () => {
-    setAuthState({ user: null, isAuthenticated: false, isLoading: false });
-  };
-
-  const updateProfile = (userData: Partial<User>) => {
-    if (authState.user) {
-      setAuthState((prev) => ({
-        ...prev,
-        user: prev.user ? { ...prev.user, ...userData } : null,
-      }));
+  const login = async (email: string, password: string): Promise<UserCredential> => {
+    setIsLoading(true);
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      setUser(userCredential.user);
+      return userCredential;
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
 
+  // In hooks/useAuth.tsx - update the register function
+const register = async (
+  email: string, 
+  password: string, 
+  fullName: string, 
+  phone?: string
+): Promise<UserCredential> => {
+  setIsLoading(true);
+  try {
+    console.log(' Firebase: Creating user with email:', email);
+    
+    // Create user with email and password
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    console.log(' Firebase: User created, UID:', userCredential.user.uid);
+    
+    // Update user profile with display name
+    await updateProfile(userCredential.user, {
+      displayName: fullName
+    });
+    console.log(' Firebase: Profile updated');
+
+    // Create user document in Firestore
+    await setDoc(doc(db, 'users', userCredential.user.uid), {
+      uid: userCredential.user.uid,
+      email: email,
+      fullName: fullName,
+      phone: phone || '',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    });
+    console.log(' Firestore: User document created');
+
+    setUser(userCredential.user);
+    return userCredential;
+  } catch (error) {
+    console.error(' Registration error in useAuth:', error);
+    throw error;
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+  const logout = async (): Promise<void> => {
+    setIsLoading(true);
+    try {
+      await signOut(auth);
+      setUser(null);
+    } catch (error) {
+      console.error('Logout error:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Listen for auth state changes
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user: User | null) => {
+      setUser(user);
+      setIsLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const value = {
+    user,
+    login,
+    register,
+    logout,
+    isLoading
+  };
+
   return (
-    <AuthContext.Provider
-      value={{ ...authState, login, register, logout, updateProfile }}
-    >
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
@@ -73,8 +121,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 }

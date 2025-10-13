@@ -2,6 +2,7 @@
 import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   ImageBackground,
   KeyboardAvoidingView,
   Platform,
@@ -70,15 +71,34 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     if (!email || !password) {
-      // Handle validation error
+      Alert.alert("Error", "Please enter both email and password");
       return;
     }
 
     try {
       await login(email, password);
+      console.log("Login successful!");
+      // Update this path to match your actual home route structure
       router.replace("/home");
-    } catch (error) {
-      // Handle login error
+    } catch (error: any) {
+      // Handle specific Firebase auth errors
+      let errorMessage = "Login failed. Please try again.";
+
+      if (error.code === "auth/invalid-email") {
+        errorMessage = "Invalid email address.";
+      } else if (error.code === "auth/user-disabled") {
+        errorMessage = "This account has been disabled.";
+      } else if (error.code === "auth/user-not-found") {
+        errorMessage = "No account found with this email.";
+      } else if (error.code === "auth/wrong-password") {
+        errorMessage = "Incorrect password.";
+      } else if (error.code === "auth/too-many-requests") {
+        errorMessage = "Too many failed attempts. Please try again later.";
+      } else {
+        errorMessage = error.message || "Login failed. Please try again.";
+      }
+
+      Alert.alert("Error", errorMessage);
       console.error("Login error:", error);
     }
   };
@@ -144,8 +164,7 @@ export default function LoginScreen() {
                   keyboardType="email-address"
                   autoCapitalize="none"
                   icon={<Icon name="email" size={20} color="#4CAF50" />}
-                  containerStyle={styles.input}
-                  labelStyle={styles.inputLabel}
+                  style={styles.input}
                 />
 
                 <Input
@@ -155,8 +174,7 @@ export default function LoginScreen() {
                   onChangeText={setPassword}
                   secureTextEntry
                   icon={<Icon name="lock" size={20} color="#4CAF50" />}
-                  containerStyle={styles.input}
-                  labelStyle={styles.inputLabel}
+                  style={styles.input}
                 />
               </View>
 
@@ -358,12 +376,6 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: 20,
   },
-  inputLabel: {
-    fontWeight: "600",
-    letterSpacing: 1,
-    color: "#1a237e",
-    marginBottom: 8,
-  },
   loginButton: {
     backgroundColor: "#1a237e",
     borderRadius: 12,
@@ -444,4 +456,3 @@ const styles = StyleSheet.create({
     color: "#1a237e",
   },
 });
- 

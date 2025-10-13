@@ -13,5 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-, "app/login.jsx", "app/splash.jsx", "app/register.jsx"  ]
+, "app/login.tsx", "app/splash.jsx", "app/register.jsx", "hooks/useAuth.tsx"  ]
 }
