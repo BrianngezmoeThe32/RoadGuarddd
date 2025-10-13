@@ -40,6 +40,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   // In hooks/useAuth.tsx - update the register function
+// In hooks/useAuth.tsx - update the register function
 const register = async (
   email: string, 
   password: string, 
@@ -48,33 +49,40 @@ const register = async (
 ): Promise<UserCredential> => {
   setIsLoading(true);
   try {
-    console.log(' Firebase: Creating user with email:', email);
+    console.log('🔄 Firebase: Creating user with email:', email);
     
     // Create user with email and password
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    console.log(' Firebase: User created, UID:', userCredential.user.uid);
+    console.log('✅ Firebase: User created, UID:', userCredential.user.uid);
     
     // Update user profile with display name
     await updateProfile(userCredential.user, {
       displayName: fullName
     });
-    console.log(' Firebase: Profile updated');
+    console.log('✅ Firebase: Profile updated');
 
-    // Create user document in Firestore
-    await setDoc(doc(db, 'users', userCredential.user.uid), {
-      uid: userCredential.user.uid,
-      email: email,
-      fullName: fullName,
-      phone: phone || '',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    });
-    console.log(' Firestore: User document created');
+    // Create user document in Firestore with error handling
+    try {
+      console.log('🔄 Firestore: Creating user document...');
+      await setDoc(doc(db, 'users', userCredential.user.uid), {
+        uid: userCredential.user.uid,
+        email: email,
+        fullName: fullName,
+        phone: phone || '',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      });
+      console.log('✅ Firestore: User document created successfully');
+    } catch (firestoreError) {
+      console.error('❌ Firestore error:', firestoreError);
+      // Even if Firestore fails, we still have a registered user
+      // So we don't throw the error, just log it
+    }
 
     setUser(userCredential.user);
     return userCredential;
   } catch (error) {
-    console.error(' Registration error in useAuth:', error);
+    console.error('❌ Registration error in useAuth:', error);
     throw error;
   } finally {
     setIsLoading(false);

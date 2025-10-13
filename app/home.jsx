@@ -14,7 +14,7 @@ export default function HomeScreen() {
   const { services, requestService, isLoading } = useServices();
   const [userLocation] = useState("123 Main St, Cityville");
 
-  const handleServiceSelect = (service: any) => {
+  const handleServiceSelect = (service) => {
     router.push({
       pathname: "/modal",
       params: {
@@ -52,7 +52,7 @@ export default function HomeScreen() {
       </View>
 
       <ScrollView style={styles.content}>
-        <Text style={styles.welcomeText}>Hello, {user?.name}!</Text>
+        <Text style={styles.userName}>Hello, {user.displayName}!</Text>
         <Text style={styles.subtitle}>How can we help you today?</Text>
 
         <View style={styles.locationContainer}>

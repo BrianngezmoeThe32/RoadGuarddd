@@ -20,10 +20,13 @@ import Animated, {
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
+import { Alert } from "react-native";
 import Button from "../components/common/Button";
 import Input from "../components/common/Input";
+import { useAuth } from "../hooks/useAuth";
 
 const RegisterScreen = () => {
+  const { register, isLoading } = useAuth();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -70,13 +73,71 @@ const RegisterScreen = () => {
     opacity: glowOpacity.value,
   }));
 
- const handleInputChange = (field, value) => {
-  setFormData(prev => ({ ...prev, [field]: value }));
-};
+  const handleInputChange = (field, value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
-  const handleRegister = () => {
-    // Handle registration logic here
-    console.log("Register with:", formData);
+  const handleRegister = async () => {
+    // Validation
+    if (
+      !formData.fullName ||
+      !formData.email ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
+      Alert.alert("Error", "Please fill in all required fields");
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      Alert.alert("Error", "Passwords do not match");
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      Alert.alert("Error", "Password must be at least 6 characters");
+      return;
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      Alert.alert("Error", "Please enter a valid email address");
+      return;
+    }
+    try {
+      console.log("🔄 Starting registration with:", formData);
+
+      // ACTUALLY CALL THE REGISTER FUNCTION
+      await register(
+        formData.email,
+        formData.password,
+        formData.fullName,
+        formData.phone
+      );
+
+      console.log("✅ Registration successful!");
+      Alert.alert("Success", "Account created successfully!");
+
+      // Navigate to home or login
+      router.replace("/home");
+    } catch (error) {
+      console.error("❌ Registration failed:", error);
+
+      let errorMessage = "Registration failed. Please try again.";
+
+      if (error.code === "auth/email-already-in-use") {
+        errorMessage = "This email is already registered.";
+      } else if (error.code === "auth/weak-password") {
+        errorMessage = "Password is too weak. Please use a stronger password.";
+      } else if (error.code === "auth/invalid-email") {
+        errorMessage = "Invalid email address.";
+      } else if (error.code === "auth/network-request-failed") {
+        errorMessage = "Network error. Please check your connection.";
+      }
+
+      Alert.alert("Registration Error", errorMessage);
+    }
   };
 
   return (
@@ -199,8 +260,10 @@ const RegisterScreen = () => {
               </View>
 
               <Button
-                title="Register"
+                title={isLoading ? "Creating Account..." : "Register"}
                 onPress={handleRegister}
+                loading={isLoading}
+                disabled={isLoading}
                 style={styles.registerButton}
                 textStyle={styles.registerButtonText}
                 icon={

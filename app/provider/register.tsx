@@ -129,7 +129,7 @@ export default function ProviderRegistration() {
       [
         {
           text: 'OK',
-          onPress: () => router.replace('/provider/dashboard'),
+          onPress: () => router.replace('//provider/dashboard'),
         },
       ]
     );
