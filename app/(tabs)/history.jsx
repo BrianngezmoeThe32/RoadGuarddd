@@ -3,16 +3,16 @@ import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-import Button from "../components/common/Button";
-import HistoryItem from "../components/screens/HistoryItem";
-import { COLORS } from "../constants/colors";
-import { useServices } from "../hooks/useServices";
+import Button from "../../components/common/Button";
+import HistoryItem from "../../components/screens/HistoryItem";
+import { COLORS } from "../../constants/colors";
+import { useServices } from "../../hooks/useServices";
 
 export default function HistoryScreen() {
   const { getServiceHistory } = useServices();
   const serviceHistory = getServiceHistory();
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status) => {
     switch (status) {
       case "Completed":
         return COLORS.success;

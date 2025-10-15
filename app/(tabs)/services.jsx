@@ -1,43 +1,48 @@
-import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-} from 'react-native';
-import { router } from 'expo-router';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { router } from "expo-router";
+import React from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
-import { useServices } from '../hooks/useServices';
-import ServiceCard from '../components/screens/ServiceCard';
-import Button from "../components/common/Button";
-import { COLORS } from '../constants/colors';
+import Button from "../../components/common/Button";
+import ServiceCard from "../../components/screens/ServiceCard";
+import { COLORS } from "../../constants/colors";
+import { useServices } from "../../hooks/useServices";
 
 export default function ServicesScreen() {
   const { services } = useServices();
 
-  const handleServiceSelect = (service: any) => {
+  const handleServiceSelect = (service) => {
     router.push({
-      pathname: '/modal',
-      params: { 
+      pathname: "/modal",
+      params: {
         service: JSON.stringify(service),
-        type: 'service-request'
-      }
+        type: "service-request",
+      },
     });
   };
 
   const pricingPlans = [
     {
-      title: 'Basic Assistance',
-      price: '$49.99',
-      description: 'For services like jump starts and lockout assistance',
-      features: ['Jump Start', 'Lockout Service', 'Tire Change', 'Fuel Delivery'],
+      title: "Basic Assistance",
+      price: "$49.99",
+      description: "For services like jump starts and lockout assistance",
+      features: [
+        "Jump Start",
+        "Lockout Service",
+        "Tire Change",
+        "Fuel Delivery",
+      ],
     },
     {
-      title: 'Premium Plan',
-      price: '$99.99/month',
-      description: 'Complete roadside protection',
-      features: ['All Basic Services', 'Towing (up to 10 miles)', 'Trip Interruption', 'Rental Car Discount'],
+      title: "Premium Plan",
+      price: "$99.99/month",
+      description: "Complete roadside protection",
+      features: [
+        "All Basic Services",
+        "Towing (up to 10 miles)",
+        "Trip Interruption",
+        "Rental Car Discount",
+      ],
     },
   ];
 
@@ -60,16 +65,19 @@ export default function ServicesScreen() {
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.heroSection}>
-          <Text style={styles.heroTitle}>Comprehensive Roadside Assistance</Text>
+          <Text style={styles.heroTitle}>
+            Comprehensive Roadside Assistance
+          </Text>
           <Text style={styles.heroSubtitle}>
-            RoadGuard offers a wide range of services to get you back on the road quickly and safely.
+            RoadGuard offers a wide range of services to get you back on the
+            road quickly and safely.
           </Text>
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Available Services</Text>
           <View style={styles.servicesGrid}>
-            {services.map(service => (
+            {services.map((service) => (
               <ServiceCard
                 key={service.id}
                 service={service}
@@ -86,19 +94,25 @@ export default function ServicesScreen() {
               <View key={index} style={styles.pricingCard}>
                 <Text style={styles.pricingTitle}>{plan.title}</Text>
                 <Text style={styles.pricingPrice}>{plan.price}</Text>
-                <Text style={styles.pricingDescription}>{plan.description}</Text>
+                <Text style={styles.pricingDescription}>
+                  {plan.description}
+                </Text>
+
                 <View style={styles.featuresList}>
                   {plan.features.map((feature, featureIndex) => (
                     <View key={featureIndex} style={styles.featureItem}>
-                      <Icon name="check-circle" size={16} color={COLORS.success} />
+                      <Icon name="check-circle" size={16} color="#4CAF50" />
                       <Text style={styles.featureText}>{feature}</Text>
                     </View>
                   ))}
                 </View>
+
                 <Button
                   title="Choose Plan"
                   onPress={() => {}}
+                  variant="outline"
                   style={styles.planButton}
+                  textStyle={styles.planButtonText}
                 />
               </View>
             ))}
@@ -113,21 +127,27 @@ export default function ServicesScreen() {
               <Icon name="flash-on" size={24} color={COLORS.success} />
               <View style={styles.benefitContent}>
                 <Text style={styles.benefitTitle}>Rapid Response</Text>
-                <Text style={styles.benefitText}>Average response time under 30 minutes</Text>
+                <Text style={styles.benefitText}>
+                  Average response time under 30 minutes
+                </Text>
               </View>
             </View>
             <View style={styles.benefitItem}>
               <Icon name="security" size={24} color={COLORS.success} />
               <View style={styles.benefitContent}>
                 <Text style={styles.benefitTitle}>24/7 Availability</Text>
-                <Text style={styles.benefitText}>Round-the-clock service, 365 days a year</Text>
+                <Text style={styles.benefitText}>
+                  Round-the-clock service, 365 days a year
+                </Text>
               </View>
             </View>
             <View style={styles.benefitItem}>
               <Icon name="star" size={24} color={COLORS.success} />
               <View style={styles.benefitContent}>
                 <Text style={styles.benefitTitle}>Certified Technicians</Text>
-                <Text style={styles.benefitText}>All our technicians are certified and experienced</Text>
+                <Text style={styles.benefitText}>
+                  All our technicians are certified and experienced
+                </Text>
               </View>
             </View>
           </View>
@@ -140,157 +160,182 @@ export default function ServicesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: "#FFFFFF",
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 16,
-    backgroundColor: COLORS.primary,
-    elevation: 4,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 24,
+    paddingTop: 60,
+    paddingBottom: 20,
+    backgroundColor: "#1a237e",
+    borderBottomWidth: 1,
+    borderBottomColor: "#F0F0F0",
   },
   headerLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   headerTitle: {
-    color: COLORS.white,
+    color: "#FFFFFF",
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "800",
+    letterSpacing: 1.5,
     marginLeft: 12,
   },
   backButton: {
     paddingVertical: 8,
     paddingHorizontal: 12,
-    minHeight: 40,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#FFFFFF",
+    backgroundColor: "rgba(255,255,255,0.1)",
   },
   backButtonText: {
-    fontSize: 14,
-    color: COLORS.primaryLight,
+    fontSize: 12,
+    color: "#FFFFFF",
+    fontWeight: "700",
+    letterSpacing: 1,
   },
   content: {
     flex: 1,
-    padding: 16,
+    padding: 24,
   },
   heroSection: {
-    alignItems: 'center',
-    marginBottom: 32,
-    padding: 20,
-    backgroundColor: COLORS.white,
-    borderRadius: 12,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    padding: 24,
+    marginBottom: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
     elevation: 2,
+    borderWidth: 1,
+    borderColor: "#F0F0F0",
+    alignItems: "center",
   },
   heroTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: COLORS.primary,
-    textAlign: 'center',
+    fontSize: 22,
+    fontWeight: "700",
+    color: "#1a237e",
     marginBottom: 8,
+    textAlign: "center",
   },
   heroSubtitle: {
     fontSize: 16,
-    color: COLORS.gray,
-    textAlign: 'center',
-    lineHeight: 24,
+    color: "#666",
+    textAlign: "center",
+    lineHeight: 22,
   },
   section: {
-    marginBottom: 32,
+    marginBottom: 20,
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: COLORS.primary,
-    marginBottom: 16,
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#1a237e",
+    letterSpacing: 2,
+    marginBottom: 12,
   },
   servicesGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
   },
   pricingContainer: {
     gap: 16,
   },
   pricingCard: {
-    backgroundColor: COLORS.white,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
     padding: 20,
-    borderRadius: 12,
-    elevation: 2,
-    shadowColor: COLORS.black,
+    marginBottom: 12,
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
+    borderWidth: 1,
+    borderColor: "#F0F0F0",
   },
   pricingTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: COLORS.primary,
+    fontWeight: "700",
+    color: "#1a237e",
     marginBottom: 8,
   },
   pricingPrice: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: COLORS.success,
+    fontSize: 22,
+    fontWeight: "700",
+    color: "#1a237e", 
     marginBottom: 8,
   },
   pricingDescription: {
     fontSize: 14,
-    color: COLORS.gray,
+    color: "#666",
     marginBottom: 16,
     lineHeight: 20,
   },
   featuresList: {
     gap: 8,
-    marginBottom: 20,
+    marginBottom: 12,
   },
   featureItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   featureText: {
     fontSize: 14,
-    color: COLORS.primary,
+    color: "#1a237e",
     marginLeft: 8,
   },
   planButton: {
     marginTop: 8,
   },
   infoSection: {
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: COLORS.white,
-    borderRadius: 12,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    padding: 24,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
     elevation: 2,
+    borderWidth: 1,
+    borderColor: "#F0F0F0",
+    alignItems: "center",
+    marginBottom: 20,
   },
   infoTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: COLORS.primary,
-    marginTop: 16,
-    marginBottom: 24,
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#1a237e",
+    marginTop: 12,
+    marginBottom: 16,
   },
   benefitsList: {
-    width: '100%',
-    gap: 20,
+    width: "100%",
+    gap: 12,
   },
   benefitItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+    flexDirection: "row",
+    alignItems: "flex-start",
   },
   benefitContent: {
     flex: 1,
-    marginLeft: 16,
+    marginLeft: 12,
   },
   benefitTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: COLORS.primary,
-    marginBottom: 4,
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#1a237e",
+    marginBottom: 2,
   },
   benefitText: {
-    fontSize: 14,
-    color: COLORS.gray,
-    lineHeight: 20,
+    fontSize: 12,
+    color: "#666",
+    lineHeight: 18,
   },
 });
