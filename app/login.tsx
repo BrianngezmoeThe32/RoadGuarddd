@@ -26,6 +26,7 @@ import Button from "../components/common/Button";
 import Input from "../components/common/Input";
 import { useAuth } from "../hooks/useAuth";
 
+
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
