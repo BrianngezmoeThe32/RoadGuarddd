@@ -3,15 +3,26 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     }
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts"
-, "app/login.tsx", "app/splash.jsx", "app/register.jsx", "hooks/useAuth.tsx", "app/home.jsx"  ]
+    "expo-env.d.ts",
+    "app/login.jsx",
+    "app/splash.jsx",
+    "app/register.jsx",
+    "hooks/useAuth.tsx",
+    "app/(tabs)/home.jsx",
+    "services/api.js",
+    "services/users.js",
+    "services/providers.js",
+    "services/services.js",
+    "context/LocationContext.jsx",
+    "app/(tabs)/_layout.jsx",
+    "app/(tabs)/history.jsx",
+    "app/(tabs)/profile.jsx"
+, "app/(tabs)/services.jsx"  ]
 }

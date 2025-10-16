@@ -1,15 +1,14 @@
-// app/login.tsx
 import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
   Alert,
-  ImageBackground,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import Animated, {
@@ -31,25 +30,17 @@ export default function LoginScreen() {
   const [password, setPassword] = useState("");
   const { login, isLoading } = useAuth();
 
-  // Animation values
   const fadeAnim = useSharedValue(0);
   const logoScale = useSharedValue(0.8);
   const contentSlide = useSharedValue(30);
   const formOpacity = useSharedValue(0);
-  const glowOpacity = useSharedValue(0);
 
   useEffect(() => {
-    // Staggered animation sequence
     fadeAnim.value = withTiming(1, { duration: 800 });
     logoScale.value = withSpring(1, { damping: 12, stiffness: 100 });
     contentSlide.value = withDelay(200, withSpring(0, { damping: 15 }));
     formOpacity.value = withDelay(400, withTiming(1, { duration: 600 }));
-    glowOpacity.value = withDelay(600, withTiming(1, { duration: 1000 }));
   }, []);
-
-  const animatedBackground = useAnimatedStyle(() => ({
-    opacity: fadeAnim.value,
-  }));
 
   const animatedLogo = useAnimatedStyle(() => ({
     opacity: fadeAnim.value,
@@ -65,10 +56,6 @@ export default function LoginScreen() {
     opacity: formOpacity.value,
   }));
 
-  const animatedGlow = useAnimatedStyle(() => ({
-    opacity: glowOpacity.value,
-  }));
-
   const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert("Error", "Please enter both email and password");
@@ -77,11 +64,8 @@ export default function LoginScreen() {
 
     try {
       await login(email, password);
-      console.log("Login successful!");
-      // Update this path to match your actual home route structure
       router.replace("/home");
-    } catch (error: any) {
-      // Handle specific Firebase auth errors
+    } catch (error) {
       let errorMessage = "Login failed. Please try again.";
 
       if (error.code === "auth/invalid-email") {
@@ -99,29 +83,22 @@ export default function LoginScreen() {
       }
 
       Alert.alert("Error", errorMessage);
-      console.error("Login error:", error);
     }
+  };
+
+  const handleForgotPassword = () => {
+    Alert.alert("Forgot Password", "Password reset feature coming soon!");
+    // You can implement password reset logic here later
+    // router.push("/forgot-password");
   };
 
   return (
     <View style={styles.container}>
       <StatusBar
-        barStyle="light-content"
-        backgroundColor="transparent"
+        barStyle="dark-content"
+        backgroundColor="#FFFFFF"
         translucent
       />
-
-      <Animated.View style={[StyleSheet.absoluteFill, animatedBackground]}>
-        <ImageBackground
-          source={{
-            uri: "https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
-          }}
-          style={styles.backgroundImage}
-        >
-          <View style={styles.overlay} />
-          <Animated.View style={[styles.glowEffect, animatedGlow]} />
-        </ImageBackground>
-      </Animated.View>
 
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -131,13 +108,11 @@ export default function LoginScreen() {
           contentContainerStyle={styles.scrollContainer}
           showsVerticalScrollIndicator={false}
         >
-          {/* Header Section - Continuation from Splash */}
           <Animated.View style={[styles.headerContainer, animatedContent]}>
             <Animated.View style={[styles.logoContainer, animatedLogo]}>
               <View style={styles.logoCircle}>
-                <Icon name="security" size={40} color="#FFFFFF" />
+                <Icon name="directions-car" size={40} color="#1a237e" />
               </View>
-              <Animated.View style={[styles.logoGlow, animatedGlow]} />
             </Animated.View>
 
             <View style={styles.textContainer}>
@@ -147,13 +122,10 @@ export default function LoginScreen() {
             </View>
           </Animated.View>
 
-          {/* Login Form */}
           <Animated.View style={[styles.formContainer, animatedForm]}>
             <View style={styles.formCard}>
               <Text style={styles.welcomeText}>Welcome Back</Text>
-              <Text style={styles.loginPrompt}>
-                Sign in to continue your journey
-              </Text>
+              <Text style={styles.loginPrompt}>Sign in to your account</Text>
 
               <View style={styles.inputsContainer}>
                 <Input
@@ -163,8 +135,7 @@ export default function LoginScreen() {
                   onChangeText={setEmail}
                   keyboardType="email-address"
                   autoCapitalize="none"
-                  icon={<Icon name="email" size={20} color="#4CAF50" />}
-                  style={styles.input}
+                  icon={<Icon name="email" size={20} color="#1a237e" />}
                 />
 
                 <Input
@@ -173,13 +144,22 @@ export default function LoginScreen() {
                   value={password}
                   onChangeText={setPassword}
                   secureTextEntry
-                  icon={<Icon name="lock" size={20} color="#4CAF50" />}
-                  style={styles.input}
+                  icon={<Icon name="lock" size={20} color="#1a237e" />}
                 />
+
+                {/* Forgot Password Link */}
+                <TouchableOpacity
+                  style={styles.forgotPasswordContainer}
+                  onPress={handleForgotPassword}
+                >
+                  <Text style={styles.forgotPasswordText}>
+                    Forgot Password?
+                  </Text>
+                </TouchableOpacity>
               </View>
 
               <Button
-                title="Login"
+                title="SIGN IN"
                 onPress={handleLogin}
                 loading={isLoading}
                 style={styles.loginButton}
@@ -194,16 +174,13 @@ export default function LoginScreen() {
                 }
               />
 
-              {/* Divider */}
               <View style={styles.divider}>
                 <View style={styles.dividerLine} />
-                <Text style={styles.dividerText}>Secure Access</Text>
+                <Text style={styles.dividerText}>Or continue with</Text>
                 <View style={styles.dividerLine} />
               </View>
 
-              {/* Social Login */}
               <View style={styles.socialContainer}>
-                <Text style={styles.socialTitle}>Quick Access</Text>
                 <View style={styles.socialButtons}>
                   <Button
                     title=""
@@ -211,7 +188,7 @@ export default function LoginScreen() {
                     onPress={() => {}}
                     style={styles.socialIconButton}
                     icon={
-                      <FontAwesome name="google" size={20} color="#DB4437" />
+                      <FontAwesome name="google" size={24} color="#DB4437" />
                     }
                   />
                   <Button
@@ -220,7 +197,7 @@ export default function LoginScreen() {
                     onPress={() => {}}
                     style={styles.socialIconButton}
                     icon={
-                      <FontAwesome name="apple" size={20} color="#000000" />
+                      <FontAwesome name="apple" size={24} color="#000000" />
                     }
                   />
                   <Button
@@ -229,17 +206,16 @@ export default function LoginScreen() {
                     onPress={() => {}}
                     style={styles.socialIconButton}
                     icon={
-                      <FontAwesome name="facebook" size={20} color="#4267B2" />
+                      <FontAwesome name="facebook" size={24} color="#4267B2" />
                     }
                   />
                 </View>
               </View>
 
-              {/* Sign Up */}
               <View style={styles.signupContainer}>
-                <Text style={styles.signupPrompt}>New to RoadGuard? </Text>
+                <Text style={styles.signupPrompt}>Don't have an account? </Text>
                 <Button
-                  title="CREATE ACCOUNT"
+                  title="SIGN UP"
                   variant="outline"
                   onPress={() => router.push("/register")}
                   style={styles.signupButton}
@@ -257,61 +233,39 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1a237e",
-  },
-  backgroundImage: {
-    flex: 1,
-  },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(26, 35, 126, 0.9)",
-  },
-  glowEffect: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(76, 175, 80, 0.1)",
+    backgroundColor: "#FFFFFF",
   },
   keyboardAvoid: {
     flex: 1,
   },
   scrollContainer: {
     flexGrow: 1,
-    justifyContent: "space-between",
-    paddingVertical: 40,
+    justifyContent: "center",
+    paddingVertical: 20,
   },
   headerContainer: {
     alignItems: "center",
     paddingHorizontal: 24,
-    marginTop: 20,
+    marginBottom: 10,
   },
   logoContainer: {
     alignItems: "center",
-    marginBottom: 20,
-    position: "relative",
+    marginBottom: 5,
   },
   logoCircle: {
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: "rgba(255, 255, 255, 0.15)",
+    backgroundColor: "#F8F9FA",
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 1.5,
-    borderColor: "rgba(255, 255, 255, 0.3)",
-    shadowColor: "#4CAF50",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.3,
-    shadowRadius: 15,
-    elevation: 8,
-  },
-  logoGlow: {
-    position: "absolute",
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: "rgba(76, 175, 80, 0.15)",
-    top: -10,
-    left: -10,
-    zIndex: -1,
+    borderWidth: 2,
+    borderColor: "#1a237e",
+    shadowColor: "#1a237e",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
   },
   textContainer: {
     alignItems: "center",
@@ -319,62 +273,65 @@ const styles = StyleSheet.create({
   appName: {
     fontSize: 32,
     fontWeight: "800",
-    color: "#FFFFFF",
-    letterSpacing: 3,
-    textShadowColor: "rgba(0, 0, 0, 0.5)",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 8,
+    color: "#1a237e",
+    letterSpacing: 2,
     marginBottom: 8,
   },
   titleUnderline: {
-    width: 60,
+    width: 50,
     height: 3,
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#1a237e",
     borderRadius: 2,
     marginBottom: 12,
   },
   subtitle: {
     fontSize: 16,
     fontWeight: "500",
-    color: "rgba(255, 255, 255, 0.8)",
-    letterSpacing: 1,
+    color: "#666",
+    letterSpacing: 0.5,
   },
   formContainer: {
     paddingHorizontal: 24,
-    marginTop: 20,
   },
   formCard: {
-    backgroundColor: "rgba(255, 255, 255, 0.95)",
-    borderRadius: 20,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
     padding: 24,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.1,
-    shadowRadius: 20,
-    elevation: 10,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
     borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.2)",
+    borderColor: "#F0F0F0",
   },
   welcomeText: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: "700",
     color: "#1a237e",
     textAlign: "center",
     marginBottom: 8,
-    letterSpacing: 0.5,
   },
   loginPrompt: {
     fontSize: 16,
     color: "#666",
     textAlign: "center",
-    marginBottom: 32,
+    marginBottom: 24,
     fontWeight: "400",
   },
   inputsContainer: {
-    marginBottom: 24,
-  },
-  input: {
     marginBottom: 20,
+  },
+  forgotPasswordContainer: {
+    alignSelf: "flex-end",
+    marginTop: 8,
+    marginBottom: 16,
+  },
+  forgotPasswordText: {
+    fontSize: 14,
+    color: "#1a237e",
+    fontWeight: "600",
+    textDecorationLine: "underline",
   },
   loginButton: {
     backgroundColor: "#1a237e",
@@ -382,13 +339,13 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     shadowColor: "#1a237e",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.2,
     shadowRadius: 8,
-    elevation: 6,
+    elevation: 4,
   },
   loginButtonText: {
     fontSize: 16,
-    fontWeight: "700",
+    fontWeight: "600",
     letterSpacing: 0.5,
   },
   buttonIcon: {
@@ -397,43 +354,54 @@ const styles = StyleSheet.create({
   divider: {
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: 24,
+    marginVertical: 20,
   },
   dividerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.1)",
+    backgroundColor: "#E5E5E5",
   },
   dividerText: {
-    color: "#666",
+    color: "#999",
     marginHorizontal: 12,
-    fontSize: 12,
-    fontWeight: "600",
-    letterSpacing: 1,
+    fontSize: 14,
+    fontWeight: "500",
   },
   socialContainer: {
     alignItems: "center",
-    marginBottom: 24,
-  },
-  socialTitle: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#666",
-    marginBottom: 16,
-    letterSpacing: 1,
+    marginBottom: 20,
   },
   socialButtons: {
     flexDirection: "row",
     justifyContent: "center",
-    gap: 16,
+    gap: 20,
+    width: "100%",
+  },
+
+  socialButton: {
+    flex: 1,
+    paddingVertical: 12,
+    borderColor: "#E5E5E5",
+    backgroundColor: "#FFFFFF",
+    minHeight: 50,
   },
   socialIconButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    borderColor: "rgba(0, 0, 0, 0.1)",
-    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    borderColor: "#E5E5E5",
+    borderWidth: 1,
+    backgroundColor: "#FFFFFF",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "visible", // ensures the icon is not cut off
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
+
   signupContainer: {
     flexDirection: "row",
     justifyContent: "center",
@@ -442,7 +410,7 @@ const styles = StyleSheet.create({
   signupPrompt: {
     color: "#666",
     fontSize: 14,
-    fontWeight: "500",
+    fontWeight: "400",
   },
   signupButton: {
     paddingVertical: 6,
@@ -452,7 +420,7 @@ const styles = StyleSheet.create({
   },
   signupText: {
     fontSize: 14,
-    fontWeight: "700",
+    fontWeight: "600",
     color: "#1a237e",
   },
 });
