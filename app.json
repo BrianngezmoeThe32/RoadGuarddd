@@ -35,16 +35,9 @@
             "backgroundColor": "#000000"
           }
         }
+        
       ],
-      "expo-web-browser",
-      [
-        "expo-location",
-        {
-          "locationAlwaysAndWhenInUsePermission": "Allow Roadguard to use your location to find nearby roadside assistance providers.",
-          "locationAlwaysPermission": "Allow Roadguard to use your location for ongoing service requests.",
-          "locationWhenInUsePermission": "Allow Roadguard to use your location to find nearby roadside assistance providers."
-        }
-      ]
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   TouchableOpacity,
   Text,
@@ -6,14 +6,14 @@ import {
   StyleSheet,
   ViewStyle,
   TextStyle,
-} from "react-native";
-import { COLORS } from "../../constants/colors";
+} from 'react-native';
+import { COLORS } from '../../constants/colors';
 
 export interface ButtonProps {
-  title?: string;
+  title: string;
   onPress: () => void;
-  variant?: "primary" | "secondary" | "outline" | "text";
-  size?: "small" | "medium" | "large";
+  variant?: 'primary' | 'secondary' | 'outline' | 'text';
+  size?: 'small' | 'medium' | 'large';
   loading?: boolean;
   disabled?: boolean;
   icon?: React.ReactNode;
@@ -24,47 +24,24 @@ export interface ButtonProps {
 const Button: React.FC<ButtonProps> = ({
   title,
   onPress,
-  variant = "primary",
-  size = "medium",
+  variant = 'primary',
+  size = 'medium',
   loading = false,
   disabled = false,
   icon,
   style,
   textStyle,
 }) => {
-  const isIconOnly = icon && !title;
-
   const getButtonStyle = (): ViewStyle => {
     const baseStyle: ViewStyle = {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "center",
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
       borderRadius: 8,
-      borderWidth: variant === "outline" ? 1 : 0,
+      borderWidth: variant === 'outline' ? 1 : 0,
     };
 
-    if (isIconOnly) {
-      // Special style for round icon-only buttons
-      return {
-        ...baseStyle,
-        width: 60,
-        height: 60,
-        borderRadius: 30,
-        borderColor: "#E5E5E5",
-        backgroundColor: "#FFFFFF",
-        justifyContent: "center",
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 3,
-        padding: 0,
-        ...style,
-      };
-    }
-
-    // Otherwise, normal size and variant styles
+    // Size styles
     const sizeStyles: { [key in typeof size]: ViewStyle } = {
       small: {
         paddingVertical: 8,
@@ -83,6 +60,7 @@ const Button: React.FC<ButtonProps> = ({
       },
     };
 
+    // Variant styles
     const variantStyles: { [key in typeof variant]: ViewStyle } = {
       primary: {
         backgroundColor: disabled ? COLORS.gray : COLORS.primary,
@@ -91,14 +69,14 @@ const Button: React.FC<ButtonProps> = ({
         backgroundColor: disabled ? COLORS.gray : COLORS.secondary,
       },
       outline: {
-        backgroundColor: "transparent",
+        backgroundColor: 'transparent',
         borderColor: disabled ? COLORS.gray : COLORS.primary,
       },
       text: {
-        backgroundColor: "transparent",
+        backgroundColor: 'transparent',
         paddingVertical: 8,
         paddingHorizontal: 12,
-        minHeight: "auto" as any,
+        minHeight: 'auto',
       },
     };
 
@@ -113,8 +91,8 @@ const Button: React.FC<ButtonProps> = ({
   const getTextStyle = (): TextStyle => {
     const baseStyle: TextStyle = {
       fontSize: 16,
-      fontWeight: "600",
-      textAlign: "center",
+      fontWeight: '600',
+      textAlign: 'center',
     };
 
     const variantTextStyles: { [key in typeof variant]: TextStyle } = {
@@ -130,7 +108,7 @@ const Button: React.FC<ButtonProps> = ({
       text: {
         color: disabled ? COLORS.gray : COLORS.primary,
         fontSize: 14,
-        fontWeight: "500",
+        fontWeight: '500',
       },
     };
 
@@ -162,18 +140,18 @@ const Button: React.FC<ButtonProps> = ({
       activeOpacity={0.8}
     >
       {loading ? (
-        <ActivityIndicator
-          size="small"
+        <ActivityIndicator 
+          size="small" 
           color={
-            variant === "primary" || variant === "secondary"
-              ? COLORS.white
+            variant === 'primary' || variant === 'secondary' 
+              ? COLORS.white 
               : COLORS.primary
-          }
+          } 
         />
       ) : (
         <>
           {icon && icon}
-          {title ? <Text style={getTextStyle()}>{title}</Text> : null}
+          <Text style={getTextStyle()}>{title}</Text>
         </>
       )}
     </TouchableOpacity>
@@ -182,9 +160,9 @@ const Button: React.FC<ButtonProps> = ({
 
 const styles = StyleSheet.create({
   button: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
