@@ -50,17 +50,10 @@ export default function ServicesScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <Icon name="miscellaneous-services" size={28} color={COLORS.white} />
+          <Icon name="miscellaneous-services" size={28} color="#1a237e" />
           <Text style={styles.headerTitle}>Our Services</Text>
         </View>
-        <Button
-          title="Home"
-          onPress={() => router.back()}
-          variant="outline"
-          style={styles.backButton}
-          textStyle={styles.backButtonText}
-          icon={<Icon name="home" size={16} color={COLORS.primaryLight} />}
-        />
+        {/* Home button removed since it's in bottom tabs */}
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
@@ -101,7 +94,7 @@ export default function ServicesScreen() {
                 <View style={styles.featuresList}>
                   {plan.features.map((feature, featureIndex) => (
                     <View key={featureIndex} style={styles.featureItem}>
-                      <Icon name="check-circle" size={16} color="#4CAF50" />
+                      <Icon name="check-circle" size={16} color="#1a237e" />
                       <Text style={styles.featureText}>{feature}</Text>
                     </View>
                   ))}
@@ -120,11 +113,11 @@ export default function ServicesScreen() {
         </View>
 
         <View style={styles.infoSection}>
-          <Icon name="info" size={40} color={COLORS.primary} />
+          <Icon name="info" size={40} color="#1a237e" />
           <Text style={styles.infoTitle}>Why Choose RoadGuard?</Text>
           <View style={styles.benefitsList}>
             <View style={styles.benefitItem}>
-              <Icon name="flash-on" size={24} color={COLORS.success} />
+              <Icon name="flash-on" size={24} color="#1a237e" />
               <View style={styles.benefitContent}>
                 <Text style={styles.benefitTitle}>Rapid Response</Text>
                 <Text style={styles.benefitText}>
@@ -133,7 +126,7 @@ export default function ServicesScreen() {
               </View>
             </View>
             <View style={styles.benefitItem}>
-              <Icon name="security" size={24} color={COLORS.success} />
+              <Icon name="security" size={24} color="#1a237e" />
               <View style={styles.benefitContent}>
                 <Text style={styles.benefitTitle}>24/7 Availability</Text>
                 <Text style={styles.benefitText}>
@@ -142,7 +135,7 @@ export default function ServicesScreen() {
               </View>
             </View>
             <View style={styles.benefitItem}>
-              <Icon name="star" size={24} color={COLORS.success} />
+              <Icon name="star" size={24} color="#1a237e" />
               <View style={styles.benefitContent}>
                 <Text style={styles.benefitTitle}>Certified Technicians</Text>
                 <Text style={styles.benefitText}>
@@ -169,7 +162,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: 60,
     paddingBottom: 20,
-    backgroundColor: "#1a237e",
+    backgroundColor: "#FFFFFF", // Changed to white
     borderBottomWidth: 1,
     borderBottomColor: "#F0F0F0",
   },
@@ -178,25 +171,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   headerTitle: {
-    color: "#FFFFFF",
+    color: "#1a237e", // Changed to blue
     fontSize: 20,
     fontWeight: "800",
     letterSpacing: 1.5,
     marginLeft: 12,
-  },
-  backButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: "#FFFFFF",
-    backgroundColor: "rgba(255,255,255,0.1)",
-  },
-  backButtonText: {
-    fontSize: 12,
-    color: "#FFFFFF",
-    fontWeight: "700",
-    letterSpacing: 1,
   },
   content: {
     flex: 1,
@@ -293,6 +272,11 @@ const styles = StyleSheet.create({
   },
   planButton: {
     marginTop: 8,
+  },
+  planButtonText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#1a237e",
   },
   infoSection: {
     backgroundColor: "#FFFFFF",

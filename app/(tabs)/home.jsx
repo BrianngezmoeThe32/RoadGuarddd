@@ -7,6 +7,7 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import Animated, {
@@ -110,18 +111,21 @@ export default function HomeScreen() {
       <View style={styles.header}>
         <View style={styles.headerLeft}>
           <View style={styles.logoCircle}>
-            <Icon name="security" size={24} color="#1a237e" />
+            <Icon name="directions-car" size={24} color="#1a237e" />
           </View>
           <View>
             <Text style={styles.headerTitle}>ROADGUARD</Text>
             <Text style={styles.headerSubtitle}>Premium Assistance</Text>
           </View>
         </View>
-        <View style={styles.userBadge}>
+        <TouchableOpacity
+          style={styles.userBadge}
+          onPress={() => router.push("/profile")}
+        >
           <Text style={styles.userInitial}>
             {user?.displayName?.[0]?.toUpperCase() || "U"}
           </Text>
-        </View>
+        </TouchableOpacity>
       </View>
 
       <ScrollView

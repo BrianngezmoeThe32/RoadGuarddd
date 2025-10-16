@@ -1,24 +1,23 @@
-import { router } from "expo-router";
 import React from "react";
 import {
+  Alert,
   ScrollView,
   StatusBar,
   StyleSheet,
+  Switch,
   Text,
   View,
-  Switch,
-  Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 import Button from "../../components/common/Button";
-import { useAuth } from "../../hooks/useAuth";
 import { useLocation } from "../../context/LocationContext";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function SettingsScreen() {
   const { user, logout } = useAuth();
   const { currentLocation, refreshLocation } = useLocation();
-  
+
   const [notifications, setNotifications] = React.useState(true);
   const [locationTracking, setLocationTracking] = React.useState(true);
   const [emergencyAlerts, setEmergencyAlerts] = React.useState(true);
@@ -36,13 +35,16 @@ export default function SettingsScreen() {
       "This action cannot be undone. All your data will be permanently deleted.",
       [
         { text: "Cancel", style: "cancel" },
-        { 
-          text: "Delete", 
+        {
+          text: "Delete",
           style: "destructive",
           onPress: () => {
             // Implement account deletion
-            Alert.alert("Account Deletion", "Account deletion feature to be implemented");
-          }
+            Alert.alert(
+              "Account Deletion",
+              "Account deletion feature to be implemented"
+            );
+          },
         },
       ]
     );
@@ -73,15 +75,10 @@ export default function SettingsScreen() {
 
       {/* Header */}
       <View style={styles.header}>
-        <Button
-          title="BACK"
-          onPress={() => router.back()}
-          variant="outline"
-          style={styles.backButton}
-          textStyle={styles.backButtonText}
-          icon={<Icon name="arrow-back" size={20} color="#1a237e" />}
-        />
-        <Text style={styles.headerTitle}>SETTINGS</Text>
+        <View style={styles.headerLeft}>
+          <Icon name="settings" size={24} color="#1a237e" />
+          <Text style={styles.headerTitle}>SETTINGS</Text>
+        </View>
         <View style={styles.headerSpacer} />
       </View>
 
@@ -121,9 +118,9 @@ export default function SettingsScreen() {
                 />
               }
             />
-            
+
             <View style={styles.divider} />
-            
+
             <SettingItem
               icon="location-on"
               title="Location Tracking"
@@ -137,9 +134,9 @@ export default function SettingsScreen() {
                 />
               }
             />
-            
+
             <View style={styles.divider} />
-            
+
             <SettingItem
               icon="warning"
               title="Emergency Alerts"
@@ -164,8 +161,10 @@ export default function SettingsScreen() {
               icon="my-location"
               title="Current Location"
               subtitle={
-                currentLocation 
-                  ? `Lat: ${currentLocation.latitude.toFixed(4)}, Lng: ${currentLocation.longitude.toFixed(4)}`
+                currentLocation
+                  ? `Lat: ${currentLocation.latitude.toFixed(
+                      4
+                    )}, Lng: ${currentLocation.longitude.toFixed(4)}`
                   : "Location not available"
               }
               rightComponent={
@@ -193,9 +192,9 @@ export default function SettingsScreen() {
                 <Icon name="chevron-right" size={24} color="#666" />
               }
             />
-            
+
             <View style={styles.divider} />
-            
+
             <SettingItem
               icon="description"
               title="Terms of Service"
@@ -204,9 +203,9 @@ export default function SettingsScreen() {
                 <Icon name="chevron-right" size={24} color="#666" />
               }
             />
-            
+
             <View style={styles.divider} />
-            
+
             <SettingItem
               icon="privacy-tip"
               title="Privacy Policy"
@@ -230,7 +229,7 @@ export default function SettingsScreen() {
               textStyle={styles.dangerButtonText}
               icon={<Icon name="delete" size={20} color="#d32f2f" />}
             />
-            
+
             <Button
               title="Logout"
               onPress={handleLogout}
@@ -245,7 +244,9 @@ export default function SettingsScreen() {
         {/* App Info */}
         <View style={styles.appInfo}>
           <Text style={styles.appVersion}>Roadguard v1.0.0</Text>
-          <Text style={styles.appCopyright}>© 2024 Roadguard. All rights reserved.</Text>
+          <Text style={styles.appCopyright}>
+            © 2024 Roadguard. All rights reserved.
+          </Text>
         </View>
       </ScrollView>
     </View>
@@ -282,14 +283,19 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     marginLeft: 4,
   },
+  headerLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   headerTitle: {
     color: "#1a237e",
     fontSize: 18,
     fontWeight: "700",
     letterSpacing: 2,
+    marginLeft: 12,
   },
   headerSpacer: {
-    width: 80,
+    width: 24,
   },
   content: {
     flex: 1,

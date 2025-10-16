@@ -1,17 +1,16 @@
 import { router } from "expo-router";
-import React from "react";
 import {
+  Alert,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   View,
-  Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-import Button from "../../components/common/Button";
-import { useAuth } from "../../hooks/useAuth";
+import Button from "../components/common/Button";
+import { useAuth } from "../hooks/useAuth";
 
 export default function ProfileScreen() {
   const { user, logout } = useAuth();
@@ -39,9 +38,7 @@ export default function ProfileScreen() {
               {user?.displayName?.[0]?.toUpperCase() || "U"}
             </Text>
           </View>
-          <Text style={styles.profileName}>
-            {user?.displayName || "User"}
-          </Text>
+          <Text style={styles.profileName}>{user?.displayName || "User"}</Text>
           <Text style={styles.profileEmail}>{user?.email}</Text>
         </View>
 
@@ -57,7 +54,7 @@ export default function ProfileScreen() {
               textStyle={styles.actionButtonText}
               icon={<Icon name="edit" size={20} color="#1a237e" />}
             />
-            
+
             <Button
               title="Service History"
               onPress={() => router.push("/history")}
@@ -66,7 +63,7 @@ export default function ProfileScreen() {
               textStyle={styles.actionButtonText}
               icon={<Icon name="history" size={20} color="#1a237e" />}
             />
-            
+
             <Button
               title="Contact Support"
               onPress={() => router.push("/contact")}

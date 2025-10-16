@@ -8,7 +8,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import Animated, {
@@ -136,17 +135,10 @@ const RegisterScreen = () => {
           showsVerticalScrollIndicator={false}
         >
           <Animated.View style={[styles.headerContainer, animatedContent]}>
-            <TouchableOpacity
-              style={styles.backButton}
-              onPress={() => router.back()}
-            >
-              <Icon name="arrow-back" size={24} color="#1a237e" />
-              <Text style={styles.backButtonText}>Back to Login</Text>
-            </TouchableOpacity>
-
             <Animated.View style={[styles.logoContainer, animatedLogo]}>
               <View style={styles.logoCircle}>
-                <Icon name="security" size={40} color="#1a237e" />
+                {/* ✅ Changed from 'security' to 'directions-car' to match LoginScreen */}
+                <Icon name="directions-car" size={40} color="#1a237e" />
               </View>
             </Animated.View>
 
@@ -236,6 +228,7 @@ const RegisterScreen = () => {
                 <View style={styles.dividerLine} />
               </View>
 
+              {/* ✅ Updated to match login social icon buttons exactly */}
               <View style={styles.socialContainer}>
                 <View style={styles.socialButtons}>
                   <Button
@@ -244,7 +237,7 @@ const RegisterScreen = () => {
                     onPress={() => {}}
                     style={styles.socialIconButton}
                     icon={
-                      <FontAwesome name="google" size={20} color="#DB4437" />
+                      <FontAwesome name="google" size={24} color="#DB4437" />
                     }
                   />
                   <Button
@@ -253,7 +246,7 @@ const RegisterScreen = () => {
                     onPress={() => {}}
                     style={styles.socialIconButton}
                     icon={
-                      <FontAwesome name="apple" size={20} color="#000000" />
+                      <FontAwesome name="apple" size={24} color="#000000" />
                     }
                   />
                   <Button
@@ -262,7 +255,7 @@ const RegisterScreen = () => {
                     onPress={() => {}}
                     style={styles.socialIconButton}
                     icon={
-                      <FontAwesome name="facebook" size={20} color="#4267B2" />
+                      <FontAwesome name="facebook" size={24} color="#4267B2" />
                     }
                   />
                 </View>
@@ -321,7 +314,7 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: "center",
-    marginBottom: 20,
+    marginTop: 20,
   },
   logoCircle: {
     width: 80,
@@ -434,14 +427,24 @@ const styles = StyleSheet.create({
   socialButtons: {
     flexDirection: "row",
     justifyContent: "center",
-    gap: 16,
+    gap: 20,
+    width: "100%",
   },
   socialIconButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     borderColor: "#E5E5E5",
+    borderWidth: 1,
     backgroundColor: "#FFFFFF",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "visible",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   loginContainer: {
     flexDirection: "row",

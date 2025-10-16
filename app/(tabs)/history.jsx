@@ -5,7 +5,6 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 
 import Button from "../../components/common/Button";
 import HistoryItem from "../../components/screens/HistoryItem";
-import { COLORS } from "../../constants/colors";
 import { useServices } from "../../hooks/useServices";
 
 export default function HistoryScreen() {
@@ -15,13 +14,13 @@ export default function HistoryScreen() {
   const getStatusColor = (status) => {
     switch (status) {
       case "Completed":
-        return COLORS.success;
+        return "#4CAF50";
       case "In Progress":
-        return COLORS.info;
+        return "#2196F3";
       case "Cancelled":
-        return COLORS.danger;
+        return "#d32f2f";
       default:
-        return COLORS.gray;
+        return "#666";
     }
   };
 
@@ -37,17 +36,10 @@ export default function HistoryScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <Icon name="history" size={28} color={COLORS.white} />
+          <Icon name="history" size={28} color="#1a237e" />
           <Text style={styles.headerTitle}>Service History</Text>
         </View>
-        <Button
-          title="Home"
-          onPress={() => router.back()}
-          variant="outline"
-          style={styles.backButton}
-          textStyle={styles.backButtonText}
-          icon={<Icon name="home" size={16} color={COLORS.primaryLight} />}
-        />
+        {/* Home button removed since it's in bottom tabs */}
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
@@ -60,7 +52,7 @@ export default function HistoryScreen() {
 
         {serviceHistory.length === 0 ? (
           <View style={styles.emptyState}>
-            <Icon name="history-toggle-off" size={64} color={COLORS.gray} />
+            <Icon name="history-toggle-off" size={64} color="#666" />
             <Text style={styles.emptyStateTitle}>No service history yet</Text>
             <Text style={styles.emptyStateText}>
               Your service requests will appear here once you request
@@ -75,7 +67,7 @@ export default function HistoryScreen() {
         ) : (
           <>
             <View style={styles.statsSection}>
-              <Text style={styles.sectionTitle}>Service Statistics</Text>
+              <Text style={styles.sectionTitle}>SERVICE STATISTICS</Text>
               <View style={styles.statsGrid}>
                 <View style={styles.statCard}>
                   <Text style={styles.statNumber}>{stats.total}</Text>
@@ -93,7 +85,7 @@ export default function HistoryScreen() {
             </View>
 
             <View style={styles.historySection}>
-              <Text style={styles.sectionTitle}>Recent Requests</Text>
+              <Text style={styles.sectionTitle}>RECENT REQUESTS</Text>
               <View style={styles.historyList}>
                 {serviceHistory.map((request) => (
                   <HistoryItem
@@ -108,7 +100,7 @@ export default function HistoryScreen() {
         )}
 
         <View style={styles.helpSection}>
-          <Icon name="help" size={32} color={COLORS.primary} />
+          <Icon name="help" size={32} color="#1a237e" />
           <Text style={styles.helpTitle}>Need help with a past service?</Text>
           <Text style={styles.helpText}>
             If you have any questions about a previous service request, our
@@ -129,114 +121,133 @@ export default function HistoryScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: "#FFFFFF",
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 16,
-    backgroundColor: COLORS.primary,
-    elevation: 4,
+    paddingHorizontal: 24,
+    paddingTop: 60,
+    paddingBottom: 20,
+    backgroundColor: "#FFFFFF",
+    borderBottomWidth: 1,
+    borderBottomColor: "#F0F0F0",
   },
   headerLeft: {
     flexDirection: "row",
     alignItems: "center",
   },
   headerTitle: {
-    color: COLORS.white,
+    color: "#1a237e",
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: "800",
+    letterSpacing: 1.5,
     marginLeft: 12,
-  },
-  backButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    minHeight: 40,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-  },
-  backButtonText: {
-    fontSize: 14,
-    color: COLORS.primaryLight,
   },
   content: {
     flex: 1,
-    padding: 16,
+    padding: 24,
   },
   heroSection: {
-    marginBottom: 24,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    padding: 24,
+    marginBottom: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
+    borderWidth: 1,
+    borderColor: "#F0F0F0",
   },
   heroTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: COLORS.primary,
+    fontSize: 22,
+    fontWeight: "700",
+    color: "#1a237e",
     marginBottom: 8,
   },
   heroSubtitle: {
     fontSize: 16,
-    color: COLORS.gray,
-    lineHeight: 24,
+    color: "#666",
+    lineHeight: 22,
   },
   emptyState: {
     alignItems: "center",
     justifyContent: "center",
     padding: 40,
-    backgroundColor: COLORS.white,
-    borderRadius: 12,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
     elevation: 2,
+    borderWidth: 1,
+    borderColor: "#F0F0F0",
   },
   emptyStateTitle: {
     fontSize: 20,
-    fontWeight: "bold",
-    color: COLORS.gray,
+    fontWeight: "700",
+    color: "#1a237e",
     marginTop: 16,
     marginBottom: 8,
   },
   emptyStateText: {
     fontSize: 16,
-    color: COLORS.gray,
+    color: "#666",
     textAlign: "center",
     marginBottom: 24,
-    lineHeight: 24,
+    lineHeight: 22,
   },
   emptyStateButton: {
     minWidth: 200,
+    backgroundColor: "#1a237e",
   },
   statsSection: {
-    marginBottom: 24,
+    marginBottom: 20,
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: COLORS.primary,
-    marginBottom: 16,
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#1a237e",
+    letterSpacing: 2,
+    marginBottom: 12,
   },
   statsGrid: {
     flexDirection: "row",
     justifyContent: "space-between",
+    gap: 12,
   },
   statCard: {
     flex: 1,
-    backgroundColor: COLORS.white,
-    padding: 16,
-    borderRadius: 12,
+    backgroundColor: "#FFFFFF",
+    padding: 20,
+    borderRadius: 16,
     alignItems: "center",
-    marginHorizontal: 4,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
     elevation: 2,
+    borderWidth: 1,
+    borderColor: "#F0F0F0",
   },
   statNumber: {
     fontSize: 24,
-    fontWeight: "bold",
-    color: COLORS.primary,
+    fontWeight: "800",
+    color: "#1a237e",
     marginBottom: 4,
   },
   statLabel: {
     fontSize: 12,
-    color: COLORS.gray,
+    color: "#666",
     textAlign: "center",
+    fontWeight: "500",
   },
   historySection: {
-    marginBottom: 24,
+    marginBottom: 20,
   },
   historyList: {
     gap: 12,
@@ -244,26 +255,33 @@ const styles = StyleSheet.create({
   helpSection: {
     alignItems: "center",
     padding: 24,
-    backgroundColor: COLORS.white,
-    borderRadius: 12,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
     elevation: 2,
+    borderWidth: 1,
+    borderColor: "#F0F0F0",
   },
   helpTitle: {
     fontSize: 18,
-    fontWeight: "bold",
-    color: COLORS.primary,
+    fontWeight: "700",
+    color: "#1a237e",
     marginTop: 16,
     marginBottom: 8,
     textAlign: "center",
   },
   helpText: {
     fontSize: 14,
-    color: COLORS.gray,
+    color: "#666",
     textAlign: "center",
     marginBottom: 20,
     lineHeight: 20,
   },
   helpButton: {
     minWidth: 200,
+    borderColor: "#1a237e",
   },
 });

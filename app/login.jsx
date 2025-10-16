@@ -8,6 +8,7 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import Animated, {
@@ -64,7 +65,7 @@ export default function LoginScreen() {
     try {
       await login(email, password);
       router.replace("/home");
-    } catch (error: any) {
+    } catch (error) {
       let errorMessage = "Login failed. Please try again.";
 
       if (error.code === "auth/invalid-email") {
@@ -83,6 +84,12 @@ export default function LoginScreen() {
 
       Alert.alert("Error", errorMessage);
     }
+  };
+
+  const handleForgotPassword = () => {
+    Alert.alert("Forgot Password", "Password reset feature coming soon!");
+    // You can implement password reset logic here later
+    // router.push("/forgot-password");
   };
 
   return (
@@ -104,7 +111,7 @@ export default function LoginScreen() {
           <Animated.View style={[styles.headerContainer, animatedContent]}>
             <Animated.View style={[styles.logoContainer, animatedLogo]}>
               <View style={styles.logoCircle}>
-                <Icon name="security" size={40} color="#1a237e" />
+                <Icon name="directions-car" size={40} color="#1a237e" />
               </View>
             </Animated.View>
 
@@ -139,6 +146,16 @@ export default function LoginScreen() {
                   secureTextEntry
                   icon={<Icon name="lock" size={20} color="#1a237e" />}
                 />
+
+                {/* Forgot Password Link */}
+                <TouchableOpacity
+                  style={styles.forgotPasswordContainer}
+                  onPress={handleForgotPassword}
+                >
+                  <Text style={styles.forgotPasswordText}>
+                    Forgot Password?
+                  </Text>
+                </TouchableOpacity>
               </View>
 
               <Button
@@ -171,7 +188,7 @@ export default function LoginScreen() {
                     onPress={() => {}}
                     style={styles.socialIconButton}
                     icon={
-                      <FontAwesome name="google" size={20} color="#DB4437" />
+                      <FontAwesome name="google" size={24} color="#DB4437" />
                     }
                   />
                   <Button
@@ -180,7 +197,7 @@ export default function LoginScreen() {
                     onPress={() => {}}
                     style={styles.socialIconButton}
                     icon={
-                      <FontAwesome name="apple" size={20} color="#000000" />
+                      <FontAwesome name="apple" size={24} color="#000000" />
                     }
                   />
                   <Button
@@ -189,7 +206,7 @@ export default function LoginScreen() {
                     onPress={() => {}}
                     style={styles.socialIconButton}
                     icon={
-                      <FontAwesome name="facebook" size={20} color="#4267B2" />
+                      <FontAwesome name="facebook" size={24} color="#4267B2" />
                     }
                   />
                 </View>
@@ -233,7 +250,7 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 5,
   },
   logoCircle: {
     width: 80,
@@ -305,6 +322,17 @@ const styles = StyleSheet.create({
   inputsContainer: {
     marginBottom: 20,
   },
+  forgotPasswordContainer: {
+    alignSelf: "flex-end",
+    marginTop: 8,
+    marginBottom: 16,
+  },
+  forgotPasswordText: {
+    fontSize: 14,
+    color: "#1a237e",
+    fontWeight: "600",
+    textDecorationLine: "underline",
+  },
   loginButton: {
     backgroundColor: "#1a237e",
     borderRadius: 12,
@@ -346,15 +374,34 @@ const styles = StyleSheet.create({
   socialButtons: {
     flexDirection: "row",
     justifyContent: "center",
-    gap: 16,
+    gap: 20,
+    width: "100%",
   },
-  socialIconButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+
+  socialButton: {
+    flex: 1,
+    paddingVertical: 12,
     borderColor: "#E5E5E5",
     backgroundColor: "#FFFFFF",
+    minHeight: 50,
   },
+  socialIconButton: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    borderColor: "#E5E5E5",
+    borderWidth: 1,
+    backgroundColor: "#FFFFFF",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "visible", // ensures the icon is not cut off
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+
   signupContainer: {
     flexDirection: "row",
     justifyContent: "center",
