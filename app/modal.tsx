@@ -98,31 +98,36 @@ export default function ModalScreen() {
         </View>
 
         <View style={styles.form}>
-          <Input
+          <Input 
             label="Vehicle Details"
+            style={{ color: "#1a237e"}}
             placeholder="Make, model, color, license plate"
+            placeholderTextColor="#1a237e"
             value={formData.vehicle}
             onChangeText={(value: string) =>
               setFormData((prev) => ({ ...prev, vehicle: value }))
             }
             icon={
-              <Icon name="directions-car" size={20} color={COLORS.primary} />
+              <Icon name="directions-car" size={20} color={"#1a237e"} />
             }
           />
 
           <Input
             label="Current Location"
+            style={{ color: "#1a237e"}}
             placeholder="Where are you located?"
+            placeholderTextColor="#1a237e"
             value={formData.location}
             onChangeText={(value: string) =>
               setFormData((prev) => ({ ...prev, location: value }))
             }
-            icon={<Icon name="location-on" size={20} color={COLORS.primary} />}
+            icon={<Icon name="location-on" size={20} color={"#1a237e"} />}
           />
 
           <Input
             label="Additional Notes (Optional)"
             placeholder="Any additional information that might help"
+            placeholderTextColor="#1a237e"
             value={formData.notes}
             onChangeText={(value: string) =>
               setFormData((prev) => ({ ...prev, notes: value }))
@@ -130,7 +135,7 @@ export default function ModalScreen() {
             multiline
             numberOfLines={4}
             style={styles.notesInput}
-            icon={<Icon name="notes" size={20} color={COLORS.primary} />}
+            icon={<Icon name="notes" size={20} color={"#1a237e"} />}
           />
 
           <View style={styles.emergencyNotice}>
@@ -170,7 +175,7 @@ export default function ModalScreen() {
           <Text style={styles.helpTitle}>What to Expect</Text>
           <View style={styles.expectationList}>
             <View style={styles.expectationItem}>
-              <Icon name="schedule" size={20} color={COLORS.success} />
+              <Icon name="schedule" size={20} color={"#1a237e"} />
               <Text style={styles.expectationText}>
                 <Text style={styles.expectationBold}>
                   30-minute response time
@@ -179,7 +184,7 @@ export default function ModalScreen() {
               </Text>
             </View>
             <View style={styles.expectationItem}>
-              <Icon name="phone" size={20} color={COLORS.success} />
+              <Icon name="phone" size={20} color={"#1a237e"} />
               <Text style={styles.expectationText}>
                 <Text style={styles.expectationBold}>
                   Service confirmation call
@@ -188,7 +193,7 @@ export default function ModalScreen() {
               </Text>
             </View>
             <View style={styles.expectationItem}>
-              <Icon name="payment" size={20} color={COLORS.success} />
+              <Icon name="payment" size={20} color={"#1a237e"} />
               <Text style={styles.expectationText}>
                 <Text style={styles.expectationBold}>Transparent pricing</Text>{" "}
                 before service begins
@@ -216,9 +221,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   headerTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
-    color: COLORS.primary,
+    color: "#1a237e",
   },
   closeButton: {
     width: 40,
@@ -237,7 +242,10 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 12,
     marginBottom: 24,
-    elevation: 2,
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   serviceIcon: {
     width: 80,
@@ -253,7 +261,7 @@ const styles = StyleSheet.create({
   serviceName: {
     fontSize: 20,
     fontWeight: "bold",
-    color: COLORS.primary,
+    color: "#1a237e",
     marginBottom: 4,
   },
   serviceDescription: {
@@ -266,11 +274,21 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 12,
     marginBottom: 24,
-    elevation: 2,
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+  },
+  inputLabel: {
+    color: "#1a237e",
+    fontWeight: "600",
+    marginBottom: 6,
+    fontSize: 14,
   },
   notesInput: {
     minHeight: 100,
     textAlignVertical: "top",
+    color: "#1a237e",
   },
   emergencyNotice: {
     flexDirection: "row",
@@ -284,7 +302,7 @@ const styles = StyleSheet.create({
   emergencyText: {
     flex: 1,
     fontSize: 14,
-    color: "#856404",
+    color: "#1a237e",
     marginLeft: 8,
     lineHeight: 20,
   },
@@ -294,12 +312,14 @@ const styles = StyleSheet.create({
   },
   cancelButton: {
     flex: 1,
+    backgroundColor: "#f5f5f5",
   },
   cancelButtonText: {
-    color: COLORS.gray,
+    color: "#333",
   },
   confirmButton: {
     flex: 2,
+    backgroundColor: "#1a237e",
   },
   buttonIcon: {
     marginRight: 8,
@@ -313,7 +333,7 @@ const styles = StyleSheet.create({
   helpTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    color: COLORS.primary,
+    color: "#1a237e",
     marginBottom: 16,
   },
   expectationList: {
@@ -326,12 +346,12 @@ const styles = StyleSheet.create({
   expectationText: {
     flex: 1,
     fontSize: 14,
-    color: COLORS.gray,
+    color: "#333",
     marginLeft: 12,
     lineHeight: 20,
   },
   expectationBold: {
     fontWeight: "bold",
-    color: COLORS.primary,
+    color: "#1a237e",
   },
 });
